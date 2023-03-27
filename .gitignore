@@ -8,3 +8,4 @@ logs
 *.csv
 *.o
 simulation/.tmuxinator.yml
+*.pdf

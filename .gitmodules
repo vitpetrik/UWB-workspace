@@ -4,9 +4,6 @@
 [submodule "src/mrs_msgs"]
 	path = src/mrs_msgs
 	url = https://github.com/vitpetrik/mrs_msgs.git
-[submodule "src/uvdar"]
-	path = src/uvdar
-	url = https://github.com/vitpetrik/uvdar_core.git
 [submodule "src/uwb"]
 	path = src/uwb
 	url = https://github.com/vitpetrik/UWB_MRS_ranging_ros_node.git

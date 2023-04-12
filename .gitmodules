@@ -10,3 +10,6 @@
 [submodule "src/uwb"]
 	path = src/uwb
 	url = https://github.com/vitpetrik/UWB_MRS_ranging_ros_node.git
+[submodule "src/leader_follower"]
+	path = src/leader_follower
+	url = https://github.com/vitpetrik/leader_follower.git

@@ -16,3 +16,6 @@
 [submodule "src/uvdar_gazebo"]
 	path = src/uvdar_gazebo
 	url = https://github.com/ctu-mrs/uvdar_gazebo_plugin.git
+[submodule "src/mrs_serial"]
+	path = src/mrs_serial
+	url = https://github.com/ctu-mrs/mrs_serial.git

@@ -20,7 +20,7 @@ windows:
       layout: even-vertical
       panes:
         - waitForSimulation; rosservice call /mrs_drone_spawner/spawn  "1 $UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable-ground-truth --enable-dual-uv-cameras --enable-back-uv-camera --uvcam_calib_file \"$(rospack find uvdar_core)/include/OCamCalib/config/calib_results_bf_uv_fe.txt\""
-        - waitForSimulation; sleep 12; rosservice call /mrs_drone_spawner/spawn  "2 $UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable-ground-truth --enable-uv-leds --uvled_s 0 1 2 3 "
+        - waitForSimulation; sleep 12; rosservice call /mrs_drone_spawner/spawn  "2 $UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable-ground-truth --enable-uv-leds --uvled_s 0 5 10 15"
   - sq_setter:
       layout: even-vertical
       panes:
@@ -56,7 +56,7 @@ windows:
   - uv_observer:
       layout: even-vertical
       panes:
-        - waitForCompile; gz world --pause=0; sleep 6;  export UAV_NAME=uav1; waitForControl; roslaunch uvdar_core sim_three_sided.launch
+        - waitForCompile; gz world --pause=0; sleep 6;  export UAV_NAME=uav1; waitForControl; roslaunch uvdar_core sim_two_sided.launch
         # - waitForCompile; gz world --pause=0; sleep 6;  export UAV_NAME=uav1; waitForControl; roslaunch uvdar_core multi_frequency_test.launch
   - kalman_filter:
       layout: even-vertical
@@ -73,7 +73,7 @@ windows:
   - slow_down:
       layout: even-vertical
       panes:
-        - waitForSimulation; waitForControl; sleep 5; gz physics -u 80
+        - waitForSimulation; waitForControl; sleep 5; gz physics -u 120
   - goto:
       layout: even-vertical
       panes:

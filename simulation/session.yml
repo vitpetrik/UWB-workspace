@@ -82,6 +82,28 @@ windows:
       panes:
         - export UAV_NAME=uav1; waitForControl; roslaunch uwb_range_fake uwb.launch output_id:=0 target_uav:=uav2
         - export UAV_NAME=uav3; waitForControl; roslaunch uwb_range_fake uwb.launch output_id:=0 target_uav:=uav2
+  - Follower:
+      layout: even-verical
+      panes:
+        - export UAV_NAME=uav1; waitForControl; roslaunch leader_follower follower.launch angle:=150 distance:=6 leader_id:=0
+        - export UAV_NAME=uav3; waitForControl; roslaunch leader_follower follower.launch angle:=210 distance:=6 leader_id:=0
+  - Follower-enable:
+      layout: even-verical
+      panes:
+        - 'history -s rosservice call /uav1/leader_follower/start_following'
+        - 'history -s rosservice call /uav3/leader_follower/start_following'
+  - set-constraint:
+      layout: even-vertical
+      panes:
+        - export UAV_NAME=uav1; waitForControl; rosservice call /$UAV_NAME/constraint_manager/set_constraints slow
+        - export UAV_NAME=uav2; waitForControl; rosservice call /$UAV_NAME/constraint_manager/set_constraints slow
+        - export UAV_NAME=uav3; waitForControl; rosservice call /$UAV_NAME/constraint_manager/set_constraints slow
+  - trajectory:
+      layout: even-vertical
+      panes:
+        - export UAV_NAME=uav2; waitForControl; roslaunch trajectory_loader single_uav.launch path:=/home/mrs/UWB-workspace/experiments file:=circle.txt
+        - 'export UAV_NAME=uav2; history -s rosservice call /$UAV_NAME/control_manager/goto_trajectory_start'
+        - 'export UAV_NAME=uav2; history -s rosservice call /$UAV_NAME/control_manager/start_trajectory_tracking'
   - slow_down:
       layout: even-vertical
       panes:

@@ -76,7 +76,7 @@ input=(
   'Goto start'  'roslaunch trajectory_loader goto_start.launch config:='"$TRAJECTORY_CONFIG_PATH"''
   'Start tracking'  'roslaunch trajectory_loader start_tracking.launch.launch config:='"$TRAJECTORY_CONFIG_PATH"''
   'Stop tracking' 'roslaunch trajectory_loader stop_tracking.launch.launch config:='"$TRAJECTORY_CONFIG_PATH"''
-  'Load trajectory' 'rroslaunch trajectory_loader single_uav.launch path:=~/git/UWB-workspace/experiments/ file:=circle.txt'
+  'Load trajectory' 'roslaunch trajectory_loader single_uav.launch path:=~/git/UWB-workspace/experiments/ file:=circle.txt'
   'kernel_log' 'tail -f /var/log/kern.log -n 100
 '
   'roscore' 'roscore

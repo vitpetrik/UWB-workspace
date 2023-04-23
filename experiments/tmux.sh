@@ -41,15 +41,15 @@ input=(
 '
   'NodeChecker' 'waitForRos; roslaunch mrs_uav_general node_crash_checker.launch
 '
-  'Nimbro' 'waitForRos; rosrun mrs_uav_general run_nimbro.py custom_configs/nimbro.yaml custom_configs/uav_names.yaml
+  'Nimbro' 'waitForRos; rosrun mrs_uav_general run_nimbro.py configs/nimbro.yaml configs/uav_names.yaml
 '
   'Sensors' 'waitForRos; roslaunch mrs_uav_general sensors.launch
 '
   'Status' 'waitForRos; roslaunch mrs_uav_status status.launch
 '
-  'Control' 'waitForRos; roslaunch mrs_uav_general core.launch config_constraint_manager:=./custom_configs/constraint_manager.yaml config_control_manager:=./custom_configs/control_manager.yaml config_mpc_tracker:=./custom_configs/mpc_tracker.yaml config_odometry:=./custom_configs/odometry.yaml config_uav_manager:=./custom_configs/uav_manager.yaml config_uav_names:=./custom_configs/uav_names.yaml config_landoff_tracker:=./custom_configs/landoff_tracker.yaml
+  'Control' 'waitForRos; roslaunch mrs_uav_general core.launch config_constraint_manager:=./configs/constraint_manager.yaml config_control_manager:=./configs/control_manager.yaml config_mpc_tracker:=./configs/mpc_tracker.yaml config_odometry:=./configs/odometry.yaml config_uav_manager:=./configs/uav_manager.yaml config_uav_names:=./configs/uav_names.yaml config_landoff_tracker:=./configs/landoff_tracker.yaml
 '
-  'AutoStart' 'waitForRos; roslaunch mrs_uav_general automatic_start.launch custom_config:=./custom_configs/automatic_start.yaml
+  'AutoStart' 'waitForRos; roslaunch mrs_uav_general automatic_start.launch custom_config:=./configs/automatic_start.yaml
 '
   'uvdar_observer' 'waitForRos; roslaunch uvdar_core rw_two_sided.launch
 '

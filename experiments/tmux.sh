@@ -29,6 +29,8 @@ SESSION_NAME=mav
 # * do NOT put ; at the end
 pre_input="mkdir -p $MAIN_DIR/$PROJECT_NAME; export WORLD_FILE=./world.yaml"
 
+TRAJECTORY_CONFIG_PATH="~/git/UWB-workspace/experiments/trajectory_config.yaml"
+
 # define commands
 # 'name' 'command'
 # * DO NOT PUT SPACES IN THE NAMES
@@ -49,13 +51,17 @@ input=(
 '
   'AutoStart' 'waitForRos; roslaunch mrs_uav_general automatic_start.launch custom_config:=./custom_configs/automatic_start.yaml
 '
-  'LED manager' 'waitForRos; roslaunch ????
-'
-  'uvdar_observer' 'waitForRos; roslaunch uvdar_core test_rw_two_sided.launch
+  'uvdar_observer' 'waitForRos; roslaunch uvdar_core rw_two_sided.launch
 '
   'uvdar_filter' 'waitForRos; roslaunch uvdar_core uvdar_kalman_identified.launch output_frame:='"$UAV_NAME"'/stable_origin
 '
-  'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:=/dev/ttyACM??? 
+  'Set constraint' 'waitForControl; rosservice call /'"$UAV_NAME"'/constraint_manager/set_constraints slow 
+'
+  'LED manager' 'waitForRos; roslaunch uvdar_core led_manager.launch
+'
+  'Set UVDAR' 'waitForRos; rosservice call /'"$UAV_NAME"'/uvdar_led_manager_node/quick_start '"$UWB_ID"'
+'
+  'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:=/dev/MRS_MODULE3 id:='"$UWB_ID"'
 '
   'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch
 '
@@ -65,6 +71,12 @@ input=(
 '
   'mavros_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/mavros_interface/diagnostics
 '
+  'Load trajectory default' 'waitForRos; roslaunch trajectory_loader load.launch config:='"$TRAJECTORY_CONFIG_PATH"'
+'
+  'Goto start'  'roslaunch trajectory_loader goto_start.launch config:='"$TRAJECTORY_CONFIG_PATH"''
+  'Start tracking'  'roslaunch trajectory_loader start_tracking.launch.launch config:='"$TRAJECTORY_CONFIG_PATH"''
+  'Stop tracking' 'roslaunch trajectory_loader stop_tracking.launch.launch config:='"$TRAJECTORY_CONFIG_PATH"''
+  'Load trajectory' 'rroslaunch trajectory_loader single_uav.launch path:=~/git/UWB-workspace/experiments/ file:=circle.txt'
   'kernel_log' 'tail -f /var/log/kern.log -n 100
 '
   'roscore' 'roscore

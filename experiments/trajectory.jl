@@ -5,8 +5,8 @@ using CSV
 using DataFrames
 
 function trajectory(t)
-    x = 10 + 10*sin(2*pi*t)
-    y = 0
+    x = 0
+    y = 65 + 55*sin(2*pi*t)
     z = 5
 
     return x, y, z
@@ -23,10 +23,10 @@ function trajectory(t)
 end
 
 # function trajectory(t)
-#     r = 20/(sqrt(2)* (abs(sin(2*pi*t+pi/4)) + abs(cos(2*pi*t+pi/4))))
+#     r = 20/(sqrt(2)* (abs(sin(2*pi*t+pi/4 + pi)) + abs(cos(2*pi*t+pi/4 + pi))))
 
-#     x = r*cos(2*pi*t)
-#     y = r*sin(2*pi*t)
+#     x = r*cos(2*pi*t + pi)
+#     y = r*sin(2*pi*t + pi)
 #     z = 5
 
 #     return x, y, z
@@ -41,7 +41,7 @@ global data = DataFrame(
 
 function main()
     push!(data.heading, 0)
-    t = LinRange(0, 1, 400)
+    t = LinRange(0, 1, 800)
 
     for i in t
         x, y, z = trajectory(i)
@@ -61,7 +61,7 @@ function main()
 
     data.heading[1] = data.heading[2]
 
-    CSV.write("circle2.txt", data, header=false)
+    CSV.write("circle_inverted.txt", data, header=false)
 
     return
 end

@@ -27,7 +27,7 @@ SESSION_NAME=mav
 
 # following commands will be executed first in each window
 # * do NOT put ; at the end
-pre_input="mkdir -p $MAIN_DIR/$PROJECT_NAME; export WORLD_FILE=./world.yaml"
+pre_input="mkdir -p $MAIN_DIR/$PROJECT_NAME"
 
 TRAJECTORY_CONFIG_PATH="~/git/UWB-workspace/experiments/trajectory_config.yaml"
 
@@ -45,6 +45,8 @@ input=(
 '
   'Sensors' 'waitForRos; roslaunch mrs_uav_general sensors.launch
 '
+  'RTK' 'waitForRos; roslaunch mrs_serial rtk.launch
+'
   'Status' 'waitForRos; roslaunch mrs_uav_status status.launch
 '
   'Control' 'waitForRos; roslaunch mrs_uav_general core.launch config_constraint_manager:=./configs/constraint_manager.yaml config_control_manager:=./configs/control_manager.yaml config_mpc_tracker:=./configs/mpc_tracker.yaml config_odometry:=./configs/odometry.yaml config_uav_manager:=./configs/uav_manager.yaml config_uav_names:=./configs/uav_names.yaml config_landoff_tracker:=./configs/landoff_tracker.yaml
@@ -59,11 +61,11 @@ input=(
 '
   'LED manager' 'waitForRos; roslaunch uvdar_core led_manager.launch
 '
-  'Set UVDAR' 'waitForRos; sleep 5; rosservice call /'"$UAV_NAME"'/uvdar_led_manager_node/quick_start '"$UWB_ID"'
+  'Set sequence' 'waitForRos; sleep 5; rosservice call /'"$UAV_NAME"'/uvdar_led_manager_node/select_sequences "'"$UVDAR_SEQUENCE"'"
 '
   'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:=/dev/MRS_MODULE3 uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/fcu_untilted
 '
-  'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch
+  'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:=/'"$UAV_NAME"'/stable_origin output_frame:=/'"$UAV_NAME"'/stable_origin
 '
   'slow_odom' 'waitForRos; rostopic echo /'"$UAV_NAME"'/odometry/slow_odom
 '
@@ -71,12 +73,12 @@ input=(
 '
   'mavros_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/mavros_interface/diagnostics
 '
-  'Goto_zero'  'rosservice call /'"$UAV_NAME"'/control_manager/goto \"goal: \[0.0, 0.0, 0.0, 0.0\]\"'
-  'Load trajectory' 'roslaunch trajectory_loader single_uav.launch path:=~/git/UWB-workspace/experiments/ file:=line.txt'
+  'Goto_zero'  'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [0.0, 0.0, 5.0, -1.57]"'
+  'Load trajectory' 'roslaunch trajectory_loader single_uav.launch path:=/home/mrs/git/UWB-workspace/experiments file:=circle.txt'
   'Goto start'  'rosservice call /'"$UAV_NAME"'/control_manager/goto_trajectory_start'
   'Start tracking'  'rosservice call /'"$UAV_NAME"'/control_manager/start_trajectory_tracking'
   'Stop tracking' 'rosservice call /'"$UAV_NAME"'/control_manager/stop_trajectory_tracking'
-  'Leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=1
+  'Leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=0
 '
   'Leader_follower' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
   'kernel_log' 'tail -f /var/log/kern.log -n 100

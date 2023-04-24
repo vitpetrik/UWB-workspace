@@ -19,7 +19,7 @@ MAIN_DIR=~/"bag_files"
 
 # the project name
 # * is used to define folder name in ~/$MAIN_DIR
-PROJECT_NAME=UWB
+PROJECT_NAME=UWB_UVDAR_Fuse
 
 # the name of the TMUX session
 # * can be used for attaching as 'tmux a -t <session name>'
@@ -61,7 +61,7 @@ input=(
 '
   'Set UVDAR' 'waitForRos; rosservice call /'"$UAV_NAME"'/uvdar_led_manager_node/quick_start '"$UWB_ID"'
 '
-  'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:=/dev/MRS_MODULE3 id:='"$UWB_ID"'
+  'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:=/dev/MRS_MODULE3 uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/fcu_untilted
 '
   'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch
 '

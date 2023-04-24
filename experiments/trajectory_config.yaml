@@ -9,8 +9,8 @@ trajectory:
   # Options specified here will override the common options above.
   uavs:
     uav38:
-      filename: "~/git/UWB-workspace/experiments/circle.txt"
+      filename: "~/git/UWB-workspace/experiments/line.txt"
     uav39:
-      filename: "~/git/UWB-workspace/experiments/circle2.txt"
+      filename: "~/git/UWB-workspace/experiments/line.txt"
     uav40:
       filename: "~/git/UWB-workspace/experiments/line.txt"

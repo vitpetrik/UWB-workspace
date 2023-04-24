@@ -59,7 +59,7 @@ input=(
 '
   'LED manager' 'waitForRos; roslaunch uvdar_core led_manager.launch
 '
-  'Set UVDAR' 'waitForRos; rosservice call /'"$UAV_NAME"'/uvdar_led_manager_node/quick_start '"$UWB_ID"'
+  'Set UVDAR' 'waitForRos; sleep 5; rosservice call /'"$UAV_NAME"'/uvdar_led_manager_node/quick_start '"$UWB_ID"'
 '
   'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:=/dev/MRS_MODULE3 uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/fcu_untilted
 '
@@ -73,10 +73,13 @@ input=(
 '
   'Load trajectory default' 'waitForRos; roslaunch trajectory_loader load.launch config:='"$TRAJECTORY_CONFIG_PATH"'
 '
-  'Goto start'  'roslaunch trajectory_loader goto_start.launch config:='"$TRAJECTORY_CONFIG_PATH"''
-  'Start tracking'  'roslaunch trajectory_loader start_tracking.launch.launch config:='"$TRAJECTORY_CONFIG_PATH"''
-  'Stop tracking' 'roslaunch trajectory_loader stop_tracking.launch.launch config:='"$TRAJECTORY_CONFIG_PATH"''
   'Load trajectory' 'roslaunch trajectory_loader single_uav.launch path:=~/git/UWB-workspace/experiments/ file:=circle.txt'
+  'Goto start'  'rosservice call /'"$UAV_NAME"'/control_manager/goto_trajectory_start'
+  'Start tracking'  'rosservice call /'"$UAV_NAME"'/control_manager/start_trajectory_tracking'
+  'Stop tracking' 'rosservice call /'"$UAV_NAME"'/control_manager/stop_trajectory_tracking'
+  'Leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=1
+'
+  'Leader_follower' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
   'kernel_log' 'tail -f /var/log/kern.log -n 100
 '
   'roscore' 'roscore

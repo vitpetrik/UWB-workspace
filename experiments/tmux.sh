@@ -71,9 +71,8 @@ input=(
 '
   'mavros_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/mavros_interface/diagnostics
 '
-  'Load trajectory default' 'waitForRos; roslaunch trajectory_loader load.launch config:='"$TRAJECTORY_CONFIG_PATH"'
-'
-  'Load trajectory' 'roslaunch trajectory_loader single_uav.launch path:=~/git/UWB-workspace/experiments/ file:=circle.txt'
+  'Goto_zero'  'rosservice call /'"$UAV_NAME"'/control_manager/goto \"goal: \[0.0, 0.0, 0.0, 0.0\]\"'
+  'Load trajectory' 'roslaunch trajectory_loader single_uav.launch path:=~/git/UWB-workspace/experiments/ file:=line.txt'
   'Goto start'  'rosservice call /'"$UAV_NAME"'/control_manager/goto_trajectory_start'
   'Start tracking'  'rosservice call /'"$UAV_NAME"'/control_manager/start_trajectory_tracking'
   'Stop tracking' 'rosservice call /'"$UAV_NAME"'/control_manager/stop_trajectory_tracking'

@@ -55,7 +55,7 @@ input=(
 '
   'uvdar_observer' 'waitForRos; roslaunch uvdar_core rw_two_sided.launch
 '
-  'uvdar_filter' 'waitForRos; roslaunch uvdar_core uvdar_kalman_identified.launch output_frame:='"$UAV_NAME"'/stable_origin
+  'uvdar_filter' 'waitForRos; roslaunch uvdar_core uvdar_kalman.launch output_frame:='"$UAV_NAME"'/stable_origin
 '
   'LED manager' 'waitForRos; roslaunch uvdar_core led_manager.launch
 '

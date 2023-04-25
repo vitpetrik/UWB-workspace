@@ -73,7 +73,7 @@ input=(
 '
   'Goto_zero'  'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-20.0, -20.0, 5.0, 0]"'
   'Avoid collision avoidance'  'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-30.0, -20.0, 5.0, 0]"'
-  'Load trajectory' 'roslaunch trajectory_loader single_uav.launch path:=/home/mrs/git/UWB-workspace/experiments file:=circle.txt'
+  'Load trajectory' 'roslaunch trajectory_loader single_uav.launch path:=/home/mrs/git/UWB-workspace/experiments file:=line.txt'
   'Goto start'  'rosservice call /'"$UAV_NAME"'/control_manager/goto_trajectory_start'
   'Start tracking'  'rosservice call /'"$UAV_NAME"'/control_manager/start_trajectory_tracking'
   'Stop tracking' 'rosservice call /'"$UAV_NAME"'/control_manager/stop_trajectory_tracking'

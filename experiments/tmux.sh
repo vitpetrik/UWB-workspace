@@ -57,15 +57,13 @@ input=(
 '
   'uvdar_filter' 'waitForRos; roslaunch uvdar_core uvdar_kalman_identified.launch output_frame:='"$UAV_NAME"'/stable_origin
 '
-  'Set constraint' 'waitForControl; rosservice call /'"$UAV_NAME"'/constraint_manager/set_constraints slow 
-'
   'LED manager' 'waitForRos; roslaunch uvdar_core led_manager.launch
 '
   'Set sequence' 'waitForRos; sleep 5; rosservice call /'"$UAV_NAME"'/uvdar_led_manager_node/select_sequences "'"$UVDAR_SEQUENCE"'"
 '
   'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:=/dev/MRS_MODULE3 uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/fcu_untilted
 '
-  'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:=/'"$UAV_NAME"'/stable_origin output_frame:=/'"$UAV_NAME"'/stable_origin
+  'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/stable_origin output_frame:='"$UAV_NAME"'/stable_origin
 '
   'slow_odom' 'waitForRos; rostopic echo /'"$UAV_NAME"'/odometry/slow_odom
 '
@@ -73,7 +71,7 @@ input=(
 '
   'mavros_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/mavros_interface/diagnostics
 '
-  'Goto_zero'  'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [0.0, 0.0, 5.0, -1.57]"'
+  'Goto_zero'  'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-20.0, -20.0, 5.0, 0]"'
   'Load trajectory' 'roslaunch trajectory_loader single_uav.launch path:=/home/mrs/git/UWB-workspace/experiments file:=circle.txt'
   'Goto start'  'rosservice call /'"$UAV_NAME"'/control_manager/goto_trajectory_start'
   'Start tracking'  'rosservice call /'"$UAV_NAME"'/control_manager/start_trajectory_tracking'
@@ -81,6 +79,8 @@ input=(
   'Leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=0
 '
   'Leader_follower' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
+  'Initial_pose_follower' 'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-26.0, -30.0, 5.0, 0]"'
+  'set_constraint_follower' 'rosservice call /'"$UAV_NAME"'/constraint_manager/set_constraints medium'
   'kernel_log' 'tail -f /var/log/kern.log -n 100
 '
   'roscore' 'roscore

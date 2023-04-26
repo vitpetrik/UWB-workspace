@@ -57,7 +57,7 @@ input=(
 '
   'uvdar_filter' 'waitForRos; roslaunch uvdar_core uvdar_kalman.launch output_frame:='"$UAV_NAME"'/stable_origin
 '
-  'LED manager' 'waitForRos; roslaunch uvdar_core led_manager.launch
+  'LED manager' 'waitForRos; roslaunch uvdar_core led_manager.launch portname:=/dev/MRS_MODULE1
 '
   'Set sequence' 'waitForRos; sleep 5; rosservice call /'"$UAV_NAME"'/uvdar_led_manager_node/select_sequences "'"$UVDAR_SEQUENCE"'"
 '

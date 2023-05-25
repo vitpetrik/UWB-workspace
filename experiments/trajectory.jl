@@ -15,8 +15,8 @@ end
 function trajectory(t)
     r = 10
 
-    x = r*cos(2*pi*t + 1*pi)
-    y = r*sin(2*pi*t + 1*pi)
+    x = r*cos(2*pi*t - pi/2)
+    y = r*sin(2*pi*t - pi/2)
     z = 5
 
     return x, y, z
@@ -45,6 +45,8 @@ function main()
 
     for i in t
         x, y, z = trajectory(i)
+        x -= 20
+        y -= 20
         push!(data.x, x)
         push!(data.y, y)
         push!(data.z, z)
@@ -55,13 +57,12 @@ function main()
         y_diff = data.y[i] - data.y[i-1]
 
         a = atan(y_diff, x_diff)
-
         push!(data.heading, a)
     end
 
     data.heading[1] = data.heading[2]
 
-    CSV.write("circle_inverted.txt", data, header=false)
+    CSV.write("circle_0_slow.txt", data, header=false)
 
     return
 end

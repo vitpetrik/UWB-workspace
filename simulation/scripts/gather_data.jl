@@ -30,7 +30,10 @@ global data = DataFrame(
     z_gt=Float64[],
     x_ot=Float64[],
     y_ot=Float64[],
-    z_ot=Float64[]
+    z_ot=Float64[],
+    x_obs=Float64[],
+    y_obs=Float64[],
+    z_obs=Float64[],
 )
 global data_uwb = DataFrame(
     timestamp=Float64[], 
@@ -40,6 +43,8 @@ global data_uwb = DataFrame(
 
 global uav1_gt = geometry_msgs.msg.PoseWithCovarianceStamped()
 global uav2_gt = geometry_msgs.msg.PoseWithCovarianceStamped()
+
+global ot_fcu = mrs_msgs.msg.PoseWithCovarianceArrayStamped()
 
 global START_TIME::Float64 = NaN
 
@@ -74,12 +79,20 @@ function rotmatrix_from_quat(q::Quaternion)
     return r
 end
 
+function object_tracker_fcu_cb(msg::mrs_msgs.msg.PoseWithCovarianceArrayStamped)
+    global START_TIME
+    global ot_fcu
+    global tracking_trajectory
+    ot_fcu = msg
+end
+
 function object_tracker_cb(msg::mrs_msgs.msg.PoseWithCovarianceArrayStamped)
     try
         time_stamp::Float64 = (convert(Float64, msg.header.stamp.secs) + msg.header.stamp.nsecs * 1e-9)
         global START_TIME
 
         global tracking_trajectory
+        global ot_fcu
 
         if !tracking_trajectory
             if START_TIME == NaN
@@ -104,22 +117,29 @@ function object_tracker_cb(msg::mrs_msgs.msg.PoseWithCovarianceArrayStamped)
         position_gt_r = position_gt_g - uav1
         ground_truth_dist = (position_gt_r' * position_gt_r)^(1 / 2)
 
+        if ground_truth_dist < 1 || ground_truth_dist > 100
+            return
+        end
+
         uav1_q = uav1_gt.pose.pose.orientation
         quaternion = quat(uav1_q.w, uav1_q.x, uav1_q.y, uav1_q.z)
+        position_gt_r = rotate_vector(conj(quaternion), position_gt_r)
 
         for measurement in msg.poses
-            position_r_raw = position_to_vector(measurement.pose.position)
-            position_r = rotate_vector(conj(quaternion), position_r_raw)
-            position_g = position_r + uav1
+            position_r = position_to_vector(ot_fcu.poses[1].pose.position)
+            position_g = position_to_vector(measurement.pose.position)
             range = (position_r' * position_r)^(1 / 2)
 
             covariance_raw = reshape(measurement.covariance, (6, 6))
             covariance_raw = covariance_raw'
             covariance_raw = covariance_raw[1:3, 1:3]
-            covariance = rotmatrix_from_quat(conj(quaternion)) * covariance_raw
-            mahanalobis = sqrt((position_gt_r - position_r)' * inv(covariance) * (position_gt_r - position_r))
+            covariance = covariance_raw
+            mahanalobis = ((position_gt_g - position_g)' * inv(covariance) * (position_gt_g - position_g))^(1 / 2)
 
-            σ, Wm, Wc = UT.compute_sigma_pts(position_r_raw, covariance_raw)
+            covariance_raw = reshape(ot_fcu.poses[1].covariance, (6, 6))
+            covariance_raw = covariance_raw'
+            covariance_raw = covariance_raw[1:3, 1:3]
+            σ, Wm, Wc = UT.compute_sigma_pts(position_r, covariance_raw)
 
             @. σ ^= 2 
             σ = sum(σ, dims=2)
@@ -138,7 +158,8 @@ function object_tracker_cb(msg::mrs_msgs.msg.PoseWithCovarianceArrayStamped)
             Σ[1, 1] 
             mahanalobis 
             position_gt_g...
-            position_g...])
+            position_g...
+            uav1 ...])
             # filter!(row -> row.timestamp > time_stamp - 20, data[measurement.id])
         end
 
@@ -220,9 +241,10 @@ function main()
 
     uav1_gt_sub = Subscriber{geometry_msgs.msg.PoseWithCovarianceStamped}("/uav1/ground_truth_pose", uav1_cb)
     uav2_gt_sub = Subscriber{geometry_msgs.msg.PoseWithCovarianceStamped}("/uav2/ground_truth_pose", uav2_cb)
-    object_tracker_sub = Subscriber{mrs_msgs.msg.PoseWithCovarianceArrayStamped}("/uav1/object_tracker/filtered_poses", object_tracker_cb)
+    object_tracker_sub = Subscriber{mrs_msgs.msg.PoseWithCovarianceArrayStamped}("/uav1/object_tracker/filtered_poses_fcu", object_tracker_fcu_cb)
+    object_tracker_sub2 = Subscriber{mrs_msgs.msg.PoseWithCovarianceArrayStamped}("/uav1/object_tracker/filtered_poses", object_tracker_cb)
 
-    uwb_sub = Subscriber{mrs_msgs.msg.RangeWithCovarianceArrayStamped}("/uav1/uwb_range/distance", uwb_cb)
+    uwb_sub = Subscriber{mrs_msgs.msg.RangeWithCovarianceArrayStamped}("/uav1/uwb_range/range", uwb_cb)
 
     spin()
 end

@@ -15,8 +15,8 @@ end
 function trajectory(t)
     r = 10
 
-    x = r*cos(2*pi*t - pi/2)
-    y = r*sin(2*pi*t - pi/2)
+    x = r*cos(2*pi*t)
+    y = r*sin(2*pi*t)
     z = 5
 
     return x, y, z
@@ -45,8 +45,8 @@ function main()
 
     for i in t
         x, y, z = trajectory(i)
-        x -= 20
-        y -= 20
+        # x -= 20
+        # y -= 20
         push!(data.x, x)
         push!(data.y, y)
         push!(data.z, z)
@@ -62,7 +62,7 @@ function main()
 
     data.heading[1] = data.heading[2]
 
-    CSV.write("circle_0_slow.txt", data, header=false)
+    CSV.write("circle_0.txt", data, header=false)
 
     return
 end

@@ -10,9 +10,6 @@
 [submodule "src/leader_follower"]
 	path = src/leader_follower
 	url = https://github.com/vitpetrik/leader_follower.git
-[submodule "src/uvdar_core"]
-	path = src/uvdar_core
-	url = https://github.com/ctu-mrs/uvdar_core.git
 [submodule "src/uvdar_gazebo"]
 	path = src/uvdar_gazebo
 	url = https://github.com/ctu-mrs/uvdar_gazebo_plugin.git

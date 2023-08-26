@@ -61,7 +61,7 @@ input=(
 '
   'Set sequence' 'waitForRos; sleep 5; rosservice call /'"$UAV_NAME"'/uvdar_led_manager_node/select_sequences "'"$UVDAR_SEQUENCE"'"
 '
-  'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:=/dev/MRS_MODULE3 uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/fcu_untilted
+  'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:='"$UWB_COM_PORT"' uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/fcu_untilted
 '
   'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/stable_origin output_frame:='"$UAV_NAME"'/stable_origin
 '

@@ -16,3 +16,6 @@
 [submodule "src/mrs_serial"]
 	path = src/mrs_serial
 	url = https://github.com/ctu-mrs/mrs_serial.git
+[submodule "src/uvdar_core"]
+	path = src/uvdar_core
+	url = https://github.com/ctu-mrs/uvdar_core

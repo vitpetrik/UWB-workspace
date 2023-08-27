@@ -67,7 +67,7 @@ input=(
 '
   'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/stable_origin output_frame:='"$UAV_NAME"'/stable_origin
 '
-  'Leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=1
+  'Leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=0
 '
   'Initial pose' 'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-26.0, -30.0, 5.0, 0]"'
   'Start following' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'

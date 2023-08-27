@@ -77,7 +77,7 @@ input=(
   'Goto start'  'rosservice call /'"$UAV_NAME"'/control_manager/goto_trajectory_start'
   'Start tracking'  'rosservice call /'"$UAV_NAME"'/control_manager/start_trajectory_tracking'
   'Stop tracking' 'rosservice call /'"$UAV_NAME"'/control_manager/stop_trajectory_tracking'
-  'Leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=0
+  'Leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=1
 '
   'start following' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
   'Initial_pose_follower' 'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-26.0, -30.0, 5.0, 0]"'

@@ -53,6 +53,12 @@ input=(
 '
   'AutoStart' 'waitForRos; roslaunch mrs_uav_general automatic_start.launch custom_config:=./configs/automatic_start.yaml
 '
+  'slow_odom' 'waitForRos; rostopic echo /'"$UAV_NAME"'/odometry/slow_odom
+'
+  'odom_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/odometry/diagnostics
+'
+  'mavros_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/mavros_interface/diagnostics
+'
   'uvdar_observer' 'waitForRos; roslaunch uvdar_core rw_three_sided.launch
 '
   'uvdar_filter' 'waitForRos; roslaunch uvdar_core uvdar_kalman.launch output_frame:='"$UAV_NAME"'/stable_origin
@@ -60,12 +66,6 @@ input=(
   'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:='"$UWB_COM_PORT"' uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/fcu_untilted
 '
   'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/stable_origin output_frame:='"$UAV_NAME"'/stable_origin
-'
-  'slow_odom' 'waitForRos; rostopic echo /'"$UAV_NAME"'/odometry/slow_odom
-'
-  'odom_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/odometry/diagnostics
-'
-  'mavros_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/mavros_interface/diagnostics
 '
   'Load trajectory' 'roslaunch trajectory_loader single_uav.launch path:=/home/mrs/git/UWB-workspace/experiments file:=circle_0.txt'
   'Goto start'  'rosservice call /'"$UAV_NAME"'/control_manager/goto_trajectory_start'

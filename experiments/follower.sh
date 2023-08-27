@@ -53,23 +53,19 @@ input=(
 '
   'AutoStart' 'waitForRos; roslaunch mrs_uav_general automatic_start.launch custom_config:=./configs/automatic_start.yaml
 '
-  'uvdar_observer' 'waitForRos; roslaunch uvdar_core rw_three_sided.launch
-'
-  'uvdar_filter' 'waitForRos; roslaunch uvdar_core uvdar_kalman.launch output_frame:='"$UAV_NAME"'/stable_origin
-'
-  'LED manager' 'waitForRos; roslaunch uvdar_core led_manager.launch portname:=/dev/MRS_MODULE1
-'
-  'Set sequence' 'waitForRos; sleep 5; rosservice call /'"$UAV_NAME"'/uvdar_led_manager_node/select_sequences "'"$UVDAR_SEQUENCE"'"
-'
-  'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:='"$UWB_COM_PORT"' uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/fcu_untilted
-'
-  'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/stable_origin output_frame:='"$UAV_NAME"'/stable_origin
-'
   'slow_odom' 'waitForRos; rostopic echo /'"$UAV_NAME"'/odometry/slow_odom
 '
   'odom_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/odometry/diagnostics
 '
   'mavros_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/mavros_interface/diagnostics
+'
+  'uvdar_observer' 'waitForRos; roslaunch uvdar_core rw_three_sided.launch
+'
+  'uvdar_filter' 'waitForRos; roslaunch uvdar_core uvdar_kalman.launch output_frame:='"$UAV_NAME"'/stable_origin
+'
+  'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:='"$UWB_COM_PORT"' uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/fcu_untilted
+'
+  'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/stable_origin output_frame:='"$UAV_NAME"'/stable_origin
 '
   'Leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=1
 '

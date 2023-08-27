@@ -53,7 +53,7 @@ input=(
 '
   'AutoStart' 'waitForRos; roslaunch mrs_uav_general automatic_start.launch custom_config:=./configs/automatic_start.yaml
 '
-  'uvdar_observer' 'waitForRos; roslaunch uvdar_core rw_two_sided.launch
+  'uvdar_observer' 'waitForRos; roslaunch uvdar_core rw_three_sided.launch
 '
   'uvdar_filter' 'waitForRos; roslaunch uvdar_core uvdar_kalman.launch output_frame:='"$UAV_NAME"'/stable_origin
 '
@@ -71,16 +71,11 @@ input=(
 '
   'mavros_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/mavros_interface/diagnostics
 '
-  'Goto_zero'  'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-20.0, -20.0, 5.0, 0]"'
-  'Avoid collision avoidance'  'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-30.0, -20.0, 5.0, 0]"'
-  'Load trajectory' 'roslaunch trajectory_loader single_uav.launch path:=/home/mrs/git/UWB-workspace/experiments file:=line.txt'
-  'Goto start'  'rosservice call /'"$UAV_NAME"'/control_manager/goto_trajectory_start'
-  'Start tracking'  'rosservice call /'"$UAV_NAME"'/control_manager/start_trajectory_tracking'
-  'Stop tracking' 'rosservice call /'"$UAV_NAME"'/control_manager/stop_trajectory_tracking'
   'Leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=1
 '
-  'start following' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
-  'Initial_pose_follower' 'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-26.0, -30.0, 5.0, 0]"'
+  'Initial pose' 'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-26.0, -30.0, 5.0, 0]"'
+  'Start following' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
+  'Stop following' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
   'set_constraint_follower' 'rosservice call /'"$UAV_NAME"'/constraint_manager/set_constraints medium'
   'kernel_log' 'tail -f /var/log/kern.log -n 100
 '

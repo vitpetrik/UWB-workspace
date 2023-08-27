@@ -59,7 +59,7 @@ input=(
 '
   'mavros_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/mavros_interface/diagnostics
 '
-  'uvdar_observer' 'waitForRos; roslaunch uvdar_core rw_three_sided.launch
+  'uvdar_observer' 'waitForRos; roslaunch uvdar_core rw_three_sided_throttled.launch
 '
   'uvdar_filter' 'waitForRos; roslaunch uvdar_core uvdar_kalman.launch output_frame:='"$UAV_NAME"'/stable_origin
 '

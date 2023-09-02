@@ -13,4 +13,4 @@ windows:
   - object_tracker:
       layout: even-vertical
       panes:
-        - export UAV_NAME=uav39; waitForRos; roslaunch object_tracker tracker.launch kalman_frame:=$UAV_NAME/stable_origin output_frame:=$UAV_NAME/stable_origin
+        - export UAV_NAME=uav38; waitForRos; roslaunch object_tracker tracker_dry.launch kalman_frame:=$UAV_NAME/stable_origin output_frame:=$UAV_NAME/stable_origin

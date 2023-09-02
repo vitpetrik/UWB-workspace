@@ -4,19 +4,19 @@ using Printf
 using CSV
 using DataFrames
 
-function trajectory(t)
-    x = 0
-    y = 65 + 55*sin(2*pi*t)
-    z = 5
+# function trajectory(t)
+#     x = 0
+#     y = 65 + 55*sin(2*pi*t)
+#     z = 5
 
-    return x, y, z
-end
+#     return x, y, z
+# end
 
 function trajectory(t)
     r = 10
 
-    x = r*cos(2*pi*t)
-    y = r*sin(2*pi*t)
+    x = r*cos(2*pi*t-pi/2)
+    y = r*sin(2*pi*t-pi/2)
     z = 5
 
     return x, y, z
@@ -45,8 +45,8 @@ function main()
 
     for i in t
         x, y, z = trajectory(i)
-        # x -= 20
-        # y -= 20
+        x -= 10
+        y -= 10
         push!(data.x, x)
         push!(data.y, y)
         push!(data.z, z)

@@ -10,9 +10,9 @@ windows:
   - gazebo:
       layout: even-vertical
       panes:
-        - waitForRos; roslaunch uvdar_core uvdar_gazebo.launch gui:=true
+        - waitForRos; roslaunch ./gazebo.launch gui:=true
   - status:
-      layout: even-horizontal
+      layout: even-vertical
       panes:
         - export UAV_NAME=uav1; waitForRos; roslaunch mrs_uav_status status.launch
         - export UAV_NAME=uav2; waitForRos; roslaunch mrs_uav_status status.launch
@@ -52,7 +52,7 @@ windows:
   - rviz:
       layout: even-vertical
       panes:
-        - export UAV_NAME=uav1; waitForControl; roslaunch uvdar_core multimodal_hypothesis_rviz.launch
+        - export UAV_NAME=uav1; waitForControl; rosrun rviz rviz -d ./config.rviz
   - uv_observer:
       layout: even-vertical
       panes:
@@ -92,9 +92,13 @@ windows:
   - slow_down:
       layout: even-vertical
       panes:
-        - waitForSimulation; waitForControl; sleep 5; gz physics -u 120
+        - export UAV_NAME=uav1; waitForControl; sleep 5; gz physics -u 120
   - goto:
       layout: even-vertical
       panes:
         - 'history -s rosservice call /uav1/control_manager/goto \"goal: \[10.0, -6.0, 5.0, 1.57\]\"'
         - 'history -s rosservice call /uav2/control_manager/goto \"goal: \[10.0, 0.0, 5.0, 1.57\]\"'
+  - tf-connector:
+      layout: even-vertical
+      panes:
+        - 'export UAV_NAME=uav1; waitForControl; roslaunch tf_connector tf_connector.launch'

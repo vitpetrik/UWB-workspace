@@ -13,7 +13,11 @@ windows:
   - rviz:
       layout: even-vertical
       panes:
-        - export UAV_NAME=uav38; waitForRos; rosrun rviz rviz -d config.rviz
+        - waitForRos; rosrun rviz rviz -d config.rviz
+  - tf-connector:
+      layout: even-vertical
+      panes:
+        - 'export UAV_NAME=uav38; waitForRos; roslaunch tf_connector tf_connector.launch custom_config:="/home/mrs/UWB-workspace/simulation/tf_connector.yaml"'
   - object_tracker:
       layout: even-vertical
       panes:

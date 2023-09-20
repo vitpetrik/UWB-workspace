@@ -22,3 +22,6 @@
 [submodule "src/trajectory_loader"]
 	path = src/trajectory_loader
 	url = https://github.com/ctu-mrs/trajectory_loader.git
+[submodule "src/uwb_gazebo_plugin"]
+	path = src/uwb_gazebo_plugin
+	url = https://github.com/vitpetrik/uwb_gazebo_plugin

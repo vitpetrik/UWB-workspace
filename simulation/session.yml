@@ -19,8 +19,8 @@ windows:
   - spawn:
       layout: even-vertical
       panes:
-        - waitForSimulation; sleep 12; rosservice call /mrs_drone_spawner/spawn  "36 $UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable-ground-truth --enable-uv-leds --uvled_s 4 5 6 7"
-        - waitForSimulation; rosservice call /mrs_drone_spawner/spawn  "38 $UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable-ground-truth --enable-dual-uv-cameras --enable-back-uv-camera --uvcam_calib_file \"$(rospack find uvdar_core)/include/OCamCalib/config/calib_results_bf_uv_fe.txt\""
+        - waitForSimulation; sleep 12; rosservice call /mrs_drone_spawner/spawn  "36 $UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable_qorvo_dw1000 --uwb_id 1 --enable-ground-truth --enable-uv-leds --uvled_s 4 5 6 7"
+        - waitForSimulation; rosservice call /mrs_drone_spawner/spawn  "38 $UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable_qorvo_dw1000 --uwb_id 2 --enable-ground-truth --enable-dual-uv-cameras --enable-back-uv-camera --uvcam_calib_file \"$(rospack find uvdar_core)/include/OCamCalib/config/calib_results_bf_uv_fe.txt\""
   - sq_setter:
       layout: even-vertical
       panes:
@@ -53,6 +53,8 @@ windows:
       layout: even-vertical
       panes:
         - export UAV_NAME=uav38; waitForControl; rosrun rviz rviz -d ./config.rviz
+        - export UAV_NAME=uav36; waitForControl; roslaunch mrs_rviz_plugins load_robot.launch
+        - export UAV_NAME=uav38; waitForControl; roslaunch mrs_rviz_plugins load_robot.launch
   - uv_observer:
       layout: even-vertical
       panes:

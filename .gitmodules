@@ -25,3 +25,12 @@
 [submodule "src/uwb_gazebo_plugin"]
 	path = src/uwb_gazebo_plugin
 	url = https://github.com/vitpetrik/uwb_gazebo_plugin
+[submodule "src/mrs_simulation"]
+	path = src/mrs_simulation
+	url = https://github.com/vitpetrik/mrs_simulation.git
+[submodule "src/mrs_uav_general"]
+	path = src/mrs_uav_general
+	url = https://github.com/ctu-mrs/mrs_uav_general.git
+[submodule "src/mrs_uav_gazebo_simulation"]
+	path = src/mrs_uav_gazebo_simulation
+	url = https://github.com/ctu-mrs/mrs_uav_gazebo_simulation.git

@@ -9,7 +9,7 @@
   <arg name="debug" default="false"/>
   <arg name="physics" default="ode"/>
   <arg name="verbose" default="true"/>
-  <arg name="world_name" default="/home/mrs/UWB-workspace/simulation/worlds/temesvar.world"/> 
+  <arg name="world_name" default="/home/mrs/uwb_workspace/simulation/worlds/temesvar.world"/> 
 
   <!-- set use_sim_time flag -->
   <group if="$(arg use_sim_time)">

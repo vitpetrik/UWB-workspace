@@ -82,7 +82,7 @@ windows:
   - uwb_range:
       layout: even-vertical
       panes:
-        - export UAV_NAME=uav38; waitForControl; roslaunch uwb_range_fake uwb.launch output_id:=1 target_uav:=uav36 output_frame:=$UAV_NAME/fcu
+        - export UAV_NAME=uav38; waitForControl; roslaunch uwb_range_fake uwb.launch output_id:=1 target_uav:=uav36 output_frame:=$UAV_NAME/uwb
   - Follower:
       layout: even-vertical
       panes:

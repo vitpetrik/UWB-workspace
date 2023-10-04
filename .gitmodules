@@ -33,4 +33,4 @@
 	url = https://github.com/ctu-mrs/mrs_uav_general.git
 [submodule "src/mrs_uav_gazebo_simulation"]
 	path = src/mrs_uav_gazebo_simulation
-	url = https://github.com/ctu-mrs/mrs_uav_gazebo_simulation.git
+	url = https://github.com/vitpetrik/mrs_uav_gazebo_simulation.git

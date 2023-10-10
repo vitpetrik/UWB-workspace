@@ -29,7 +29,8 @@ SESSION_NAME=mav
 # * do NOT put ; at the end
 pre_input="mkdir -p $MAIN_DIR/$PROJECT_NAME"
 
-TRAJECTORY_CONFIG_PATH="~/git/UWB-workspace/experiments/trajectory_config.yaml"
+TRAJECTORY_CONFIG_PATH="~/uwb_ws/experiments/trajectory_config.yaml"
+
 
 # define commands
 # 'name' 'command'
@@ -39,33 +40,28 @@ TRAJECTORY_CONFIG_PATH="~/git/UWB-workspace/experiments/trajectory_config.yaml"
 input=(
   'Rosbag' 'waitForOffboard; ./record.sh
 '
-  'NodeChecker' 'waitForRos; roslaunch mrs_uav_general node_crash_checker.launch
+  'Sensors' 'waitForTime; roslaunch mrs_uav_deployment sensors.launch
 '
-  'Nimbro' 'waitForRos; rosrun mrs_uav_general run_nimbro.py configs/nimbro.yaml configs/uav_names.yaml
+  'Nimbro' 'waitForTime; rosrun mrs_uav_deployment run_nimbro.py ./config/network_config.yaml `rospack find mrs_uav_deployment`/config/communication_config.yaml
 '
-  'Sensors' 'waitForRos; roslaunch mrs_uav_general sensors.launch
+  'HwApi' 'waitForTime; roslaunch mrs_uav_px4_api api.launch
+'
+  'Status' 'waitForHw; roslaunch mrs_uav_status status.launch config_file:=`pwd`/config/status_config.yaml
 '
   'RTK' 'waitForRos; roslaunch mrs_serial rtk.launch
 '
-  'Status' 'waitForRos; roslaunch mrs_uav_status status.launch
+  'Core' 'waitForTime; roslaunch mrs_uav_core core.launch platform_config:=`rospack find mrs_uav_deployment`/config/mrs_uav_system/$UAV_TYPE.yaml world_config:=`rospack find mrs_uav_deployment`/config/worlds/world_$WORLD_NAME.yaml custom_config:=./config/custom_config.yaml network_config:=./config/network_config.yaml
 '
-  'Control' 'waitForRos; roslaunch mrs_uav_general core.launch config_constraint_manager:=./configs/constraint_manager.yaml config_control_manager:=./configs/control_manager.yaml config_mpc_tracker:=./configs/mpc_tracker.yaml config_odometry:=./configs/odometry.yaml config_uav_manager:=./configs/uav_manager.yaml config_uav_names:=./configs/uav_names.yaml config_landoff_tracker:=./configs/landoff_tracker.yaml
+  'AutoStart' 'waitForHw; roslaunch mrs_uav_autostart automatic_start.launch
 '
-  'AutoStart' 'waitForRos; roslaunch mrs_uav_general automatic_start.launch custom_config:=./configs/automatic_start.yaml
-'
-  'slow_odom' 'waitForRos; rostopic echo /'"$UAV_NAME"'/odometry/slow_odom
-'
-  'odom_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/odometry/diagnostics
-'
-  'mavros_diag' 'waitForRos; rostopic echo /'"$UAV_NAME"'/mavros_interface/diagnostics
-'
+# UWB related stuff
   'uvdar_observer' 'waitForRos; roslaunch uvdar_core rw_three_sided_throttled.launch
 '
-  'uvdar_filter' 'waitForRos; roslaunch uvdar_core uvdar_kalman.launch output_frame:='"$UAV_NAME"'/stable_origin
+  'uvdar_filter' 'waitForRos; roslaunch uvdar_core uvdar_kalman.launch output_frame:='"$UAV_NAME"'/local_origin
 '
-  'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:='"$UWB_COM_PORT"' uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/fcu_untilted
+  'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:='"$UWB_COM_PORT"' uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/uwb
 '
-  'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/stable_origin output_frame:='"$UAV_NAME"'/stable_origin
+  'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/local_origin output_frame:='"$UAV_NAME"'/local_origin
 '
   'Leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=0
 '
@@ -73,9 +69,15 @@ input=(
   'Start following' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
   'Stop following' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
   'set_constraint_follower' 'rosservice call /'"$UAV_NAME"'/constraint_manager/set_constraints medium'
+# End of UWB related stuff
+# do NOT modify the command list below
+  'EstimDiag' 'waitForHw; rostopic echo /'"$UAV_NAME"'/estimation_manager/diagnostics
+'
   'kernel_log' 'tail -f /var/log/kern.log -n 100
 '
   'roscore' 'roscore
+'
+  'simtime' 'waitForRos; rosparam set use_sim_time false
 '
 )
 
@@ -84,25 +86,20 @@ init_window="Status"
 
 # automatically attach to the new session?
 # {true, false}, default true
-attach="true"
+attach=true
 
 ###########################
 ### DO NOT MODIFY BELOW ###
 ###########################
 
-# prefere the user-compiled tmux
-if [ -f /usr/local/bin/tmux ]; then
-  export TMUX_BIN=/usr/local/bin/tmux
-else
-  export TMUX_BIN=/usr/bin/tmux
-fi
+export TMUX_BIN="/usr/bin/tmux -L mrs -f /etc/ctu-mrs/tmux.conf"
 
 # find the session
 FOUND=$( $TMUX_BIN ls | grep $SESSION_NAME )
 
 if [ $? == "0" ]; then
-
   echo "The session already exists"
+  $TMUX_BIN -2 attach-session -t $SESSION_NAME
   exit
 fi
 
@@ -111,14 +108,8 @@ SCRIPT=$(readlink -f $0)
 # Absolute path this script is in. /home/user/bin
 SCRIPTPATH=`dirname $SCRIPT`
 
-if [ -z ${TMUX} ];
-then
-  TMUX= $TMUX_BIN new-session -s "$SESSION_NAME" -d
-  echo "Starting new session."
-else
-  echo "Already in tmux, leave it first."
-  exit
-fi
+TMUX= $TMUX_BIN new-session -s "$SESSION_NAME" -d
+echo "Starting new session."
 
 # get the iterator
 ITERATOR_FILE="$MAIN_DIR/$PROJECT_NAME"/iterator.txt
@@ -188,10 +179,16 @@ done
 
 $TMUX_BIN select-window -t $SESSION_NAME:$init_index
 
-if [[ "$attach" == "true" ]]; then
-  $TMUX_BIN -2 attach-session -t $SESSION_NAME
+if $attach; then
+
+  if [ -z ${TMUX} ];
+  then
+    $TMUX_BIN -2 attach-session -t $SESSION_NAME
+  else
+    tmux detach-client -E "tmux -L mrs a -t $SESSION_NAME"
+  fi
 else
   echo "The session was started"
   echo "You can later attach by calling:"
-  echo "  tmux a -t $SESSION_NAME"
+  echo "  tmux -L mrs a -t $SESSION_NAME"
 fi

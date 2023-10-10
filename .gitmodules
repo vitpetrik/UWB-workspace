@@ -13,9 +13,6 @@
 [submodule "src/uvdar_gazebo"]
 	path = src/uvdar_gazebo
 	url = https://github.com/ctu-mrs/uvdar_gazebo_plugin.git
-[submodule "src/mrs_serial"]
-	path = src/mrs_serial
-	url = https://github.com/ctu-mrs/mrs_serial.git
 [submodule "src/uvdar_core"]
 	path = src/uvdar_core
 	url = https://github.com/ctu-mrs/uvdar_core
@@ -34,3 +31,6 @@
 [submodule "src/mrs_uav_gazebo_simulation"]
 	path = src/mrs_uav_gazebo_simulation
 	url = https://github.com/vitpetrik/mrs_uav_gazebo_simulation.git
+[submodule "src/mrs_modules_msgs"]
+	path = src/mrs_modules_msgs
+	url = https://github.com/ctu-mrs/mrs_modules_msgs.git

@@ -25,8 +25,8 @@ windows:
   - spawn:
       layout: tiled
       panes:
-        - waitForGazebo; sleep 12; rosservice call /mrs_drone_spawner/spawn  "36 $UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable-ground-truth --enable-uv-leds --uvled_s 4 5 6 7"
-        - waitForGazebo; rosservice call /mrs_drone_spawner/spawn  "38 $UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable-ground-truth --enable-dual-uv-cameras --enable-back-uv-camera --uvcam_calib_file \"$(rospack find uvdar_core)/include/OCamCalib/config/calib_results_bf_uv_fe.txt\""
+        - waitForGazebo; sleep 12; rosservice call /mrs_drone_spawner/spawn  "36 $UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable_qorvo_dw1000 --uwb_id 1 --enable-ground-truth --enable-uv-leds --uvled_s 4 5 6 7"
+        - waitForGazebo; rosservice call /mrs_drone_spawner/spawn  "38 $UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable_qorvo_dw1000 --uwb_id 2 --enable-ground-truth --enable-dual-uv-cameras --enable-back-uv-camera --uvcam_calib_file \"$(rospack find uvdar_core)/include/OCamCalib/config/calib_results_bf_uv_fe.txt\""
   - hw_api:
       layout: tiled
       panes:
@@ -99,7 +99,7 @@ windows:
   - trajectory:
       layout: even-vertical
       panes:
-        - export UAV_NAME=uav36; waitForControl; roslaunch trajectory_loader single_uav.launch path:=/home/mrs/UWB-workspace/simulation file:=circle_0.txt
+        - export UAV_NAME=uav36; waitForControl; roslaunch trajectory_loader common.launch path:=`pwd` file:=circle_0.txt config:=config/custom_trajectory.yaml
         - 'export UAV_NAME=uav36; history -s rosservice call /$UAV_NAME/control_manager/goto_trajectory_start'
         - 'export UAV_NAME=uav36; history -s rosservice call /$UAV_NAME/control_manager/start_trajectory_tracking'
   - slow_down:
@@ -114,4 +114,4 @@ windows:
   - tf-connector:
       layout: even-vertical
       panes:
-        - 'export UAV_NAME=uav38; waitForControl; roslaunch tf_connector tf_connector.launch custom_config:="/home/mrs/uwb_workspace/simulation/tf_connector.yaml"'
+        - 'export UAV_NAME=uav38; waitForControl; roslaunch tf_connector tf_connector.launch custom_config:=`pwd`/tf_connector.yaml'

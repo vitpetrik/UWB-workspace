@@ -31,6 +31,3 @@
 [submodule "src/mrs_uav_gazebo_simulation"]
 	path = src/mrs_uav_gazebo_simulation
 	url = https://github.com/vitpetrik/mrs_uav_gazebo_simulation.git
-[submodule "src/mrs_modules_msgs"]
-	path = src/mrs_modules_msgs
-	url = https://github.com/ctu-mrs/mrs_modules_msgs.git

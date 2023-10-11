@@ -99,7 +99,7 @@ windows:
   - trajectory:
       layout: even-vertical
       panes:
-        - export UAV_NAME=uav36; waitForControl; roslaunch trajectory_loader common.launch path:=`pwd` file:=circle_0.txt config:=config/custom_trajectory.yaml
+        - export UAV_NAME=uav36; waitForControl; sleep 5; roslaunch ./launch/trajectory_loader.launch path:=`pwd` file:=circle_0.txt config:=config/custom_trajectory.yaml
         - 'export UAV_NAME=uav36; history -s rosservice call /$UAV_NAME/control_manager/goto_trajectory_start'
         - 'export UAV_NAME=uav36; history -s rosservice call /$UAV_NAME/control_manager/start_trajectory_tracking'
   - slow_down:

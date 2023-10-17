@@ -6,7 +6,7 @@ trajectory:
   loop: true
   use_heading: true
   fly_now: false
-  offset: [0.0, 0.0, 0.0, 0.0]      # [x, y, z, heading]
+  offset: [-45.0, -10.0, 0.0, 0.0]      # [x, y, z, heading]
 
 service:
   timeout: 3     # maximal waiting time for response after calling service

@@ -45,12 +45,6 @@ windows:
           custom_config:=./config/custom_config.yaml
           world_config:=./config/world_config.yaml
           network_config:=./config/network_config.yaml
-  - sq_setter:
-      layout: tiled
-      panes:
-        - export UAV_NAME=uav36; waitForOdometry; roslaunch uvdar_core led_manager.launch
-        - 'history -s rosservice call /uav36/uvdar_led_manager_node/quick_start 5'
-        - 'history -s rosservice call /uav36/uvdar_led_manager_node/set_frequency 59'
   - takeoff:
       layout: tiled
       panes:
@@ -109,8 +103,8 @@ windows:
   - goto:
       layout: even-vertical
       panes:
-        - 'history -s rosservice call /uav36/control_manager/goto \"goal: \[10.0, 0.0, 5.0, 1.57\]\"'
-        - 'history -s rosservice call /uav38/control_manager/goto \"goal: \[10.0, -6.0, 5.0, 1.57\]\"'
+        - 'history -s rosservice call /uav36/control_manager/goto \"goal: \[-35.0,-10.0,5.0,1.57\]\"'
+        - 'history -s rosservice call /uav38/control_manager/goto \"goal: \[-35.0,-15.0,5.0,1.57\]\"'
   - tf-connector:
       layout: even-vertical
       panes:

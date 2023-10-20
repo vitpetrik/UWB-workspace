@@ -29,7 +29,7 @@ SESSION_NAME=mav
 # * do NOT put ; at the end
 pre_input="mkdir -p $MAIN_DIR/$PROJECT_NAME"
 
-TRAJECTORY_CONFIG_PATH="~/uwb_ws/experiments/trajectory_config.yaml"
+TRAJECTORY_CONFIG_PATH="home/mrs/uwb_ws/experiments/trajectory_config.yaml"
 
 
 # define commands
@@ -61,13 +61,13 @@ input=(
 '
   'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:='"$UWB_COM_PORT"' uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/uwb
 '
-  'Object Tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/local_origin output_frame:='"$UAV_NAME"'/local_origin
+  'object_tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/local_origin output_frame:='"$UAV_NAME"'/local_origin
 '
-  'Leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=0
+  'leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=0
 '
-  'Initial pose' 'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-26.0, -30.0, 5.0, 0]"'
-  'Start following' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
-  'Stop following' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
+  'initial_pose' 'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-35.0,-15.0,5.0,1.57]"'
+  'start_following' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
+  'stop_following' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
   'set_constraint_follower' 'rosservice call /'"$UAV_NAME"'/constraint_manager/set_constraints medium'
 # End of UWB related stuff
 # do NOT modify the command list below

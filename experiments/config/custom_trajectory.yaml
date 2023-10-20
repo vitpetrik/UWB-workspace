@@ -1,0 +1,16 @@
+trajectory:
+  # Common options to be used for all trajectories (these are the default values, so you can omit them in this case).
+  frame_id: ""
+  dt: 0.2
+  delay: 0.0
+  loop: true
+  use_heading: true
+  fly_now: false
+  offset: [-45.0, -10.0, 0.0, 0.0]      # [x, y, z, heading]
+
+service:
+  timeout: 3     # maximal waiting time for response after calling service
+  load_name: "control_manager/trajectory_reference"
+  goto_name: "control_manager/goto_trajectory_start"
+  track_name: "control_manager/start_trajectory_tracking"
+  stop_name: "control_manager/stop_trajectory_tracking"

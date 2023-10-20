@@ -17,8 +17,8 @@ windows:
   - tf-connector:
       layout: even-vertical
       panes:
-        - 'export UAV_NAME=uav38; waitForRos; roslaunch tf_connector tf_connector.launch custom_config:="/home/mrs/UWB-workspace/simulation/tf_connector.yaml"'
+        - 'export UAV_NAME=uav42; waitForRos; roslaunch tf_connector tf_connector.launch custom_config:="/home/mrs/UWB-workspace/simulation/tf_connector.yaml"'
   - object_tracker:
       layout: even-vertical
       panes:
-        - export UAV_NAME=uav38; waitForRos; roslaunch object_tracker tracker.launch node_name:=object_tracker_offline
+        - export UAV_NAME=uav42; waitForRos; roslaunch object_tracker tracker.launch node_name:=object_tracker_offline

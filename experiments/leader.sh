@@ -59,12 +59,12 @@ input=(
 # '
   'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:='"$UWB_COM_PORT"' uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/uwb
 '
-  'object_tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/local_origin output_frame:='"$UAV_NAME"'/local_origin
+  'object_tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/local_origin
 '
-  'Load trajectory' 'roslaunch ./launch/trajectory_loader.launch path:=`pwd` file:=circle_0.txt config:=config/custom_trajectory.yaml'
-  'Goto start'  'rosservice call /'"$UAV_NAME"'/control_manager/goto_trajectory_start'
-  'Start tracking'  'rosservice call /'"$UAV_NAME"'/control_manager/start_trajectory_tracking'
-  'Stop tracking' 'rosservice call /'"$UAV_NAME"'/control_manager/stop_trajectory_tracking'
+  'load_trajectory' 'roslaunch ./launch/trajectory_loader.launch path:=`pwd` file:=circle_0.txt config:=config/custom_trajectory.yaml'
+  'goto_start'  'rosservice call /'"$UAV_NAME"'/control_manager/goto_trajectory_start'
+  'start_tracking'  'rosservice call /'"$UAV_NAME"'/control_manager/start_trajectory_tracking'
+  'stop_tracking' 'rosservice call /'"$UAV_NAME"'/control_manager/stop_trajectory_tracking'
   'set_constraint_follower' 'rosservice call /'"$UAV_NAME"'/constraint_manager/set_constraints medium'
 # End of UWB related stuff
 # do NOT modify the command list below

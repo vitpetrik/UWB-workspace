@@ -59,11 +59,11 @@ input=(
 # '
   'UWB' 'waitForRos; roslaunch uwb_range uwb.launch portname:='"$UWB_COM_PORT"' uwb_id:='"$UWB_ID"' output_frame:='"$UAV_NAME"'/uwb
 '
-  'object_tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/local_origin output_frame:='"$UAV_NAME"'/local_origin
+  'object_tracker' 'waitForRos; roslaunch object_tracker tracker.launch kalman_frame:='"$UAV_NAME"'/local_origin
 '
   'leader_follower' 'waitForRos; roslaunch leader_follower follower.launch angle:=180 distance:=6 leader_id:=0
 '
-  'initial_pose' 'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-45.0,-10.0,5.0,0.00]"'
+  'initial_pose' 'rosservice call /'"$UAV_NAME"'/control_manager/goto "goal: [-35.0,-16.0,5.0,0.00]"'
   'start_following' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
   'stop_following' 'rosservice call /'"$UAV_NAME"'/leader_follower/start_following'
   'set_constraint_follower' 'rosservice call /'"$UAV_NAME"'/constraint_manager/set_constraints medium'

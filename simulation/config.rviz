@@ -72,18 +72,18 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        uav41/fcu:
+        uav37/fcu:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        uav41/fcu/arms_red:
+        uav37/fcu/arms_red:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
       Name: UAVModel
-      Robot Description: /uav41/robot_model
+      Robot Description: /uav37/robot_model
       TF Prefix: ""
       Update Interval: 0
       Value: true
@@ -115,7 +115,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /uav41/control_manager/trajectory_original/markers
+      Marker Topic: /uav37/control_manager/trajectory_original/markers
       Name: UAV1 trajectory
       Namespaces:
         "": true
@@ -153,7 +153,7 @@ Visualization Manager:
         Shaft Length: 1
         Shaft Radius: 0.05000000074505806
         Value: Axes
-      Topic: /uav41/estimation_manager/odom_main
+      Topic: /uav37/estimation_manager/odom_main
       Unreliable: false
       Value: true
     - Class: rviz/MarkerArray

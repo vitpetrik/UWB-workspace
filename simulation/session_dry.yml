@@ -26,4 +26,12 @@ windows:
   - object_tracker:
       layout: even-vertical
       panes:
-        - export UAV_NAME=uav42; waitForRos; roslaunch object_tracker tracker.launch node_name:=object_tracker_offline
+        - export UAV_NAME=uav42; waitForRos; roslaunch object_tracker tracker.launch node_name:=object_tracker_offline kalman_frame:=$UAV_NAME/local_origin spectral_density_pose:=3 kalman_pose_model:=0
+  - transformer:
+      layout: even-vertical
+      panes:
+        - export UAV_NAME=uav42; waitForRos; rosrun object_tracker transformer_node __name:=tranformer_rtk_1 _uav_name:=$UAV_NAME _output_frame:=$UAV_NAME/rtk_origin ~poses:=$UAV_NAME/object_tracker/filtered_poses ~transformed_poses:=$UAV_NAME/object_tracker/filtered_poses_rtk
+        - export UAV_NAME=uav42; waitForRos; rosrun object_tracker transformer_node __name:=tranformer_fcu_1 _uav_name:=$UAV_NAME _output_frame:=$UAV_NAME/fcu ~poses:=$UAV_NAME/object_tracker/filtered_poses ~transformed_poses:=$UAV_NAME/object_tracker/filtered_poses_fcu
+        - export UAV_NAME=uav42; waitForRos; rosrun object_tracker transformer_node __name:=tranformer_rtk_2 _uav_name:=$UAV_NAME _output_frame:=$UAV_NAME/rtk_origin ~poses:=$UAV_NAME/object_tracker_offline/filtered_poses ~transformed_poses:=$UAV_NAME/object_tracker_offline/filtered_poses_rtk
+        - export UAV_NAME=uav42; waitForRos; rosrun object_tracker transformer_node __name:=tranformer_fcu_2 _uav_name:=$UAV_NAME _output_frame:=$UAV_NAME/fcu ~poses:=$UAV_NAME/object_tracker_offline/filtered_poses ~transformed_poses:=$UAV_NAME/object_tracker_offline/filtered_poses_fcu
+        - export UAV_NAME=uav42; waitForRos; rosrun tf2_ros static_transform_publisher 0.00  0.08 -0.1 0.0 0.0 0.0 $UAV_NAME/fcu $UAV_NAME/uwb

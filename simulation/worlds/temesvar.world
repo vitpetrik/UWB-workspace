@@ -42,9 +42,9 @@
     <!-- setup shadows {-->
     <scene>
       <shadows>false</shadows>
-      <sky>
-        <clouds/>
-      </sky>
+      <!-- <sky> -->
+      <!--   <clouds/> -->
+      <!-- </sky> -->
     </scene>
     <!--}-->
 
@@ -79,11 +79,14 @@
             </plane>
           </geometry>
           <surface>
-            <friction>
+            <contact>
               <ode>
-                <mu>1</mu>
-                <mu2>1</mu2>
+                <min_depth>0.01</min_depth>
+                <max_vel>0.0</max_vel>
               </ode>
+            </contact>
+            <friction>
+              <ode/>
             </friction>
           </surface>
         </collision>
@@ -139,6 +142,14 @@
         <pose>-60 -100 30 0 0.4 0.89</pose>
       </camera>
     </gui>
+    <!--}-->
+
+    <!-- GUI frame synchronization {-->
+    <plugin name="mrs_gazebo_rviz_cam_synchronizer" filename="libMrsGazeboCommonResources_RvizCameraSynchronizer.so" >
+      <target_frame_id>gazebo_user_camera</target_frame_id>
+      <world_origin_frame_id>uav37/gps_origin</world_origin_frame_id>
+      <frame_to_follow>uav37</frame_to_follow>
+    </plugin>
     <!--}-->
 
   </world>

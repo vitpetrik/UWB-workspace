@@ -108,4 +108,4 @@ windows:
   - tf-connector:
       layout: even-vertical
       panes:
-        - 'export UAV_NAME=uav42; waitForControl; roslaunch tf_connector tf_connector.launch custom_config:=`pwd`/tf_connector.yaml'
+        - 'export UAV_NAME=uav42; waitForControl; roslaunch mrs_tf_connector tf_connector.launch custom_config:=`pwd`/tf_connector.yaml'

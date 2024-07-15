@@ -15,27 +15,27 @@ windows:
   - gazebo:
       layout: tiled
       panes:
-        - waitForRos; roslaunch mrs_uav_gazebo_simulation simulation.launch world_file:=`pwd`/worlds/temesvar.world  gui:=true
+        - waitForRos; roslaunch mrs_uav_gazebo_simulation simulation.launch world_file:=`pwd`/worlds/temesvar.world  gui:=false
         - waitForControl; gz camera -c gzclient_camera -f $UAV_NAME; history -s gz camera -c gzclient_camera -f $UAV_NAME
   - status:
       layout: tiled
       panes:
-        - export UAV_NAME=uav41; waitForHw; roslaunch mrs_uav_status status.launch config_file:=`pwd`/config/uav_status.yaml
+        - export UAV_NAME=uav37; waitForHw; roslaunch mrs_uav_status status.launch config_file:=`pwd`/config/uav_status.yaml
         - export UAV_NAME=uav42; waitForHw; roslaunch mrs_uav_status status.launch config_file:=`pwd`/config/uav_status.yaml
   - spawn:
       layout: tiled
       panes:
-        - waitForGazebo; sleep 12; rosservice call /mrs_drone_spawner/spawn  "36 $UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable_qorvo_dw1000 --uwb_id 1 --enable-ground-truth --enable-uv-leds --uvled_s 4 5 6 7"
-        - waitForGazebo; rosservice call /mrs_drone_spawner/spawn  "38 $UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable_qorvo_dw1000 --uwb_id 2 --enable-ground-truth --enable-dual-uv-cameras --enable-back-uv-camera --uvcam_calib_file \"$(rospack find uvdar_core)/include/OCamCalib/config/calib_results_bf_uv_fe.txt\""
+        - waitForGazebo; sleep 12; rosservice call /mrs_drone_spawner/spawn  "37 --$UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable-ground-truth --enable-uv-leds --enable-uv-leds signal_id:=[4,5,6,7] --enable-uwb-range signal_id:=1"
+        - waitForGazebo; rosservice call /mrs_drone_spawner/spawn  "42 --$UAV_TYPE --pos-file `pwd`/position.csv --enable-rangefinder --enable-ground-truth --enable-dual-uv-cameras calib_file:=$(rospack find uvdar_core)/config/ocamcalib/calib_results_bf_uv_fe.txt --enable-uwb-range signal_id:=2"
   - hw_api:
       layout: tiled
       panes:
-        - export UAV_NAME=uav41; waitForTime; roslaunch mrs_uav_px4_api api.launch
+        - export UAV_NAME=uav37; waitForTime; roslaunch mrs_uav_px4_api api.launch
         - export UAV_NAME=uav42; waitForTime; roslaunch mrs_uav_px4_api api.launch
   - core:
       layout: tiled
       panes:
-        - export UAV_NAME=uav41; waitForHw; roslaunch mrs_uav_core core.launch
+        - export UAV_NAME=uav37; waitForHw; roslaunch mrs_uav_core core.launch
           platform_config:=`rospack find mrs_uav_gazebo_simulation`/config/mrs_uav_system/$UAV_TYPE.yaml
           custom_config:=./config/custom_config.yaml
           world_config:=./config/world_config.yaml
@@ -48,17 +48,17 @@ windows:
   - takeoff:
       layout: tiled
       panes:
-        - export UAV_NAME=uav41; waitForHw; roslaunch mrs_uav_autostart automatic_start.launch
-        - 'export UAV_NAME=uav41; waitForControl; rosservice call /$UAV_NAME/hw_api/arming 1; sleep 2; rosservice call /$UAV_NAME/hw_api/offboard'
+        - export UAV_NAME=uav37; waitForHw; roslaunch mrs_uav_autostart automatic_start.launch
+        - 'export UAV_NAME=uav37; waitForControl; rosservice call /$UAV_NAME/hw_api/arming 1; sleep 2; rosservice call /$UAV_NAME/hw_api/offboard'
         - export UAV_NAME=uav42; waitForHw; roslaunch mrs_uav_autostart automatic_start.launch
         - 'export UAV_NAME=uav42; waitForControl; rosservice call /$UAV_NAME/hw_api/arming 1; sleep 2; rosservice call /$UAV_NAME/hw_api/offboard'
   - rviz:
       layout: even-vertical
       panes:
         - export UAV_NAME=uav42; waitForControl; rosrun rviz rviz -d ./config.rviz
-        - export UAV_NAME=uav41; waitForControl; roslaunch mrs_rviz_plugins load_robot.launch
+        - export UAV_NAME=uav37; waitForControl; roslaunch mrs_rviz_plugins load_robot.launch
         - export UAV_NAME=uav42; waitForControl; roslaunch mrs_rviz_plugins load_robot.launch
-        - export UAV_NAME=uav41; waitForTime; waitForControl; roslaunch mrs_rviz_plugins rviz_interface.launch
+        - export UAV_NAME=uav37; waitForTime; waitForControl; roslaunch mrs_rviz_plugins rviz_interface.launch
         - export UAV_NAME=uav42; waitForTime; waitForControl; roslaunch mrs_rviz_plugins rviz_interface.launch
   - uv_observer:
       layout: even-vertical
@@ -72,11 +72,11 @@ windows:
   - object_tracker:
       layout: even-vertical
       panes:
-        - export UAV_NAME=uav42; waitForControl; roslaunch object_tracker tracker.launch kalman_frame:=$UAV_NAME/local_origin output_frame:=$UAV_NAME/local_origin
+        - export UAV_NAME=uav42; waitForControl; roslaunch object_tracker tracker.launch kalman_frame:=$UAV_NAME/local_origin output_frame:=$UAV_NAME/local_origin spectral_density_rotation:=0.6 spectral_density_pose:=2 kalman_pose_model:=1
   - uwb_range:
       layout: even-vertical
       panes:
-        - export UAV_NAME=uav41; waitForControl; roslaunch uwb_range uwb.launch enable_requests:=0 portname:=/dev/ttyACM0 uwb_id:=1 output_frame:='"$UAV_NAME"'/uwb
+        - export UAV_NAME=uav37; waitForControl; roslaunch uwb_range uwb.launch enable_requests:=0 portname:=/dev/ttyACM0 uwb_id:=1 output_frame:='"$UAV_NAME"'/uwb
         - export UAV_NAME=uav42; waitForControl; roslaunch uwb_range uwb.launch enable_requests:=0 portname:=/dev/ttyACM1 uwb_id:=2 output_frame:='"$UAV_NAME"'/uwb
   - Follower:
       layout: even-vertical
@@ -89,14 +89,14 @@ windows:
   - set-constraint:
       layout: even-vertical
       panes:
-        - export UAV_NAME=uav41; waitForControl; rosservice call /$UAV_NAME/constraint_manager/set_constraints slow
+        - export UAV_NAME=uav37; waitForControl; rosservice call /$UAV_NAME/constraint_manager/set_constraints slow
         - export UAV_NAME=uav42; waitForControl; rosservice call /$UAV_NAME/constraint_manager/set_constraints slow
   - trajectory:
       layout: even-vertical
       panes:
-        - export UAV_NAME=uav41; waitForControl; sleep 5; roslaunch ./launch/trajectory_loader.launch path:=`pwd` file:=circle_0.txt config:=config/custom_trajectory.yaml
-        - 'export UAV_NAME=uav41; history -s rosservice call /$UAV_NAME/control_manager/goto_trajectory_start'
-        - 'export UAV_NAME=uav41; history -s rosservice call /$UAV_NAME/control_manager/start_trajectory_tracking'
+        - export UAV_NAME=uav37; waitForControl; sleep 5; roslaunch ./launch/trajectory_loader.launch path:=`pwd` file:=circle_0.txt config:=config/custom_trajectory.yaml
+        - 'export UAV_NAME=uav37; history -s rosservice call /$UAV_NAME/control_manager/goto_trajectory_start'
+        - 'export UAV_NAME=uav37; history -s rosservice call /$UAV_NAME/control_manager/start_trajectory_tracking'
   - slow_down:
       layout: even-vertical
       panes:
@@ -104,9 +104,9 @@ windows:
   - goto:
       layout: even-vertical
       panes:
-        - 'history -s rosservice call /uav41/control_manager/goto \"goal: \[-35.0,-10.0,5.0,1.57\]\"'
-        - 'history -s rosservice call /uav42/control_manager/goto \"goal: \[-35.0,-15.0,5.0,1.57\]\"'
+        - 'history -s rosservice call /uav37/control_manager/goto \"goal: \[-35.0,-10.0,5.0,1.57\]\"'
+        - 'history -s rosservice call /uav42/control_manager/goto \"goal: \[-35.0,-16.0,5.0,1.57\]\"'
   - tf-connector:
       layout: even-vertical
       panes:
-        - 'export UAV_NAME=uav42; waitForControl; roslaunch tf_connector tf_connector.launch custom_config:=`pwd`/tf_connector.yaml'
+        - 'export UAV_NAME=uav42; waitForControl; roslaunch mrs_tf_connector tf_connector.launch custom_config:=`pwd`/tf_connector.yaml'
